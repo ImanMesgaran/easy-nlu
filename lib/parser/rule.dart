@@ -5,16 +5,16 @@ import 'package:easy_nlu/parser/semantics.dart' show Semantics;
 class Rule {
   String _lhs;
   StringTuple _rhs;
-  SemanticFunction _semantics;
+  SemanticFunction? _semantics;
 
-  Rule(String lhs, StringTuple rhs, [SemanticFunction semantics])
+  Rule(String lhs, StringTuple rhs, [SemanticFunction? semantics])
       : _lhs = lhs,
         _rhs = rhs,
         _semantics = semantics {
     validate();
   }
 
-  Rule.fromStrings(String lhs, String rhs, [SemanticFunction semantics])
+  Rule.fromStrings(String lhs, String rhs, [SemanticFunction? semantics])
       : _lhs = lhs,
         _rhs = StringTuple(rhs),
         _semantics = semantics {
@@ -22,7 +22,7 @@ class Rule {
   }
 
   Rule.fromStringsWithTemplate(
-      String lhs, String rhs, Map<String, Object> semantics)
+      String lhs, String rhs, Map<String, Object?> semantics)
       : _lhs = lhs,
         _rhs = StringTuple(rhs),
         _semantics = Semantics.parseTemplate(semantics) {
@@ -39,7 +39,7 @@ class Rule {
   String get getLHS => _lhs;
   StringTuple get getRHS => _rhs;
 
-  SemanticFunction get getSemantics => _semantics;
+  SemanticFunction? get getSemantics => _semantics;
 
   bool isLexical() {
     for (var item in _rhs) {

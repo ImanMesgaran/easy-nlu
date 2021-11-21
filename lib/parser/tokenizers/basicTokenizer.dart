@@ -7,7 +7,7 @@ class BasicTokenizer with Tokenizer {
         .replaceAllMapped(RegExp("[:,]"), (m) => "")
         .replaceAllMapped(RegExp("[/\\-]"), (m) => " ")
         .replaceAllMapped(
-            RegExp("(\\d)(st|nd|rd|th|ST|ND|RD|TH)?"), (m) => m.group(1))
+            RegExp("(\\d)(st|nd|rd|th|ST|ND|RD|TH)?"), (m) => m.group(1)!)
         .replaceAllMapped(
             RegExp("(\\d)([a-zA-Z])"), (m) => "${m.group(1)} ${m.group(2)}");
     return cleaned.split(" ");
