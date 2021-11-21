@@ -14,7 +14,7 @@ void main() {
       List<Rule> rules = DateTimeAnnotator().annotate(tokens);
 
       expect(rules[0].getLHS, "\$DATE_MONTH");
-      List<Map<String, Object?>> result = rules[0].getSemantics!([])!;
+      List<Map<String, Object>> result = rules[0].getSemantics([]);
       expect(result[0].containsKey("month"), true);
       expect(result[0]["month"], 5.0);
     });
@@ -24,7 +24,7 @@ void main() {
       List<Rule> rules = DateTimeAnnotator().annotate(tokens);
 
       expect(rules[0].getLHS, "\$DATE_DOW");
-      List<Map<String, Object?>> result = rules[0].getSemantics!([])!;
+      List<Map<String, Object>> result = rules[0].getSemantics([]);
 
       expect(result[0].containsKey("dow"), true);
       expect(result[0]["dow"], 7.0);

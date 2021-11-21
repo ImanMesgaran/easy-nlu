@@ -25,8 +25,8 @@ void main() {
 
       Derivation d = Derivation(null, null);
       chart.addDerivation(3, 5, d);
-      expect(1, chart.getDerivations(3, 5)!.length);
-      expect(d, chart.getDerivations(3, 5)![0]);
+      expect(1, chart.getDerivations(3, 5).length);
+      expect(d, chart.getDerivations(3, 5)[0]);
     });
 
     test("parse syntactic", () async {
@@ -44,8 +44,8 @@ void main() {
       Derivation actual = p.parseSyntactic("a b")[0];
 
       expect(expected.rule, actual.rule);
-      expect(expected.children![0].rule, actual.children![0].rule);
-      expect(expected.children![1].rule, actual.children![1].rule);
+      expect(expected.children[0].rule, actual.children[0].rule);
+      expect(expected.children[1].rule, actual.children[1].rule);
     });
 
     test("parse", () async {
@@ -81,7 +81,7 @@ void main() {
 
       Parser p = Parser(null, null, null);
 
-      expect(expected, p.applySemantics(d)![0]);
+      expect(expected, p.applySemantics(d)[0]);
     });
 
     test("apply annotators", () async {
@@ -91,7 +91,7 @@ void main() {
       Rule r = PhraseAnnotator().annotate(tokens)[0];
 
       p.applyAnnotators(chart, tokens, 0, 3);
-      expect(r, chart.getDerivations(0, 3)![0].rule);
+      expect(r, chart.getDerivations(0, 3)[0].rule);
     });
 
     test("apply lexical rules", () async {
@@ -103,7 +103,7 @@ void main() {
       List<String> tokens = ["A", "B", "C"];
 
       p.applyLexicalRules(chart, tokens, 1, 3);
-      expect(rules[0], chart.getDerivations(1, 3)![0].rule);
+      expect(rules[0], chart.getDerivations(1, 3)[0].rule);
     });
 
     test("apply unary rules", () async {
@@ -121,9 +121,9 @@ void main() {
 
       p.applyUnaryRules(chart, 1, 3);
 
-      expect(3, chart.getDerivations(1, 3)!.length);
-      expect(rules[0], chart.getDerivations(1, 3)![2].rule);
-      expect(rules[1], chart.getDerivations(1, 3)![1].rule);
+      expect(3, chart.getDerivations(1, 3).length);
+      expect(rules[0], chart.getDerivations(1, 3)[2].rule);
+      expect(rules[1], chart.getDerivations(1, 3)[1].rule);
     });
 
     test("apply binary rules", () async {
@@ -137,7 +137,7 @@ void main() {
       chart.addDerivation(1, 2, Derivation(Rule.fromStrings("\$B", "B"), null));
 
       p.applyBinaryRules(chart, 0, 2);
-      expect(rules[0], chart.getDerivations(0, 2)![0].rule);
+      expect(rules[0], chart.getDerivations(0, 2)[0].rule);
     });
   });
 }

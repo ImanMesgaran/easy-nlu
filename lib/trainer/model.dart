@@ -15,17 +15,17 @@ import 'package:easy_nlu/trainer/optimizer.dart';
 
 class Model {
   Parser _parser;
-  Map<String, double?> _weights;
-  String? _modelPath;
+  Map<String, double> _weights;
+  String _modelPath;
 
   Model(Parser parser)
       : _parser = parser,
         _weights = parser.weights;
 
   Parser get parser => _parser;
-  Map<String, double?> get weights => _weights;
+  Map<String, double> get weights => _weights;
 
-  factory Model.fromFiles(String modelPath, [bool? includeDefaultRules]) {
+  factory Model.fromFiles(String modelPath, [bool includeDefaultRules]) {
     List<Rule> rules = [];
     if (includeDefaultRules != null && includeDefaultRules) {
       rules.addAll(Rule.baseRules);
@@ -73,8 +73,8 @@ class Model {
     parser.weights = _weights;
   }
 
-  Map<String, double?> _parseText(String text) {
-    Map<String, double?> weights = {};
+  Map<String, double> _parseText(String text) {
+    Map<String, double> weights = {};
 
     List<String> lines = text.split("\n");
     for (var line in lines) {
@@ -103,7 +103,7 @@ class Model {
     double loss;
     double maxAcc = 0;
     int count;
-    Map<String, double?> bestWeights = {};
+    Map<String, double> bestWeights = {};
     for (var i = 0; i < epochs; ++i) {
       loss = 0;
       count = 0;
@@ -143,7 +143,7 @@ class Model {
       List<LogicalForm> lfs = _parser.parse(e.input);
       for (var lf in lfs) {
         if (first) {
-          score += lf.derivation.score!;
+          score += lf.derivation.score;
           if (lf.match(e.label)) {
             if (first) {
               acc++;

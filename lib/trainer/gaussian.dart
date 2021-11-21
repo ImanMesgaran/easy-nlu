@@ -3,10 +3,10 @@ import 'dart:math';
 class Gaussian {
   Random _random = Random();
   bool _haveNextNextGaussian = false;
-  double? _nextNextGaussian;
+  double _nextNextGaussian;
 
   //https://docs.oracle.com/javase/7/docs/api/java/util/Random.html#nextGaussian()
-  double? nextGaussian() {
+  double nextGaussian() {
     if (_haveNextNextGaussian) {
       _haveNextNextGaussian = false;
       return _nextNextGaussian;

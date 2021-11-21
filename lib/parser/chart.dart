@@ -10,7 +10,7 @@ class Chart {
       : _base = size,
         _chart = {};
 
-  List<Derivation>? getDerivations(int start, int end) {
+  List<Derivation> getDerivations(int start, int end) {
     int span = mapSpan(start, end);
     if (!_chart.containsKey(span)) {
       List<Derivation> d = [];
@@ -21,11 +21,11 @@ class Chart {
   }
 
   void addDerivation(int start, int end, Derivation derivation) {
-    getDerivations(start, end)!.add(derivation);
+    getDerivations(start, end).add(derivation);
   }
 
   bool isSpanFull(int start, int end) {
-    List<Derivation> dl = getDerivations(start, end)!;
+    List<Derivation> dl = getDerivations(start, end);
     int size = dl.length;
     if (size > Chart.MAX_CAPACITY_PER_SPAN) {
       return true;
