@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_nlu/trainer/dataset.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,6 +8,18 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   group("", () {
     test("", () async {
+      String _test = """
+      call John tomorrow morning	{"task":"call John", "startTime":{"offset": {"day":1}, "shift":"morning"}}
+      call John in the morning tomorrow	{"task":"call John", "startTime":{"offset": {"day":1}, "shift":"morning"}}
+call John next day morning	{"task":"call John", "startTime":{"offset": {"day":1}, "shift":"morning"}}
+call John tomorrow in the morning	{"task":"call John", "startTime":{"offset": {"day":1}, "shift":"morning"}}
+get milk and bread at 7	{"task":"get milk and bread", "startTime":{"hour":7}}
+      """;
+
+      final _result = JsonEncoder.withIndent(_test);
+
+      //final _jsonResult = Map<String, dynamic>.from(_test);
+
       Dataset dataset = Dataset.fromText("""
       call John tomorrow morning	{"task":"call John", "startTime":{"offset": {"day":1}, "shift":"morning"}}
       call John in the morning tomorrow	{"task":"call John", "startTime":{"offset": {"day":1}, "shift":"morning"}}
