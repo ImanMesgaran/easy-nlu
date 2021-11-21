@@ -1,11 +1,11 @@
 import 'package:easy_nlu/parser/rule.dart';
 
 class Derivation {
-  Rule rule;
-  double score = 0.0;
-  List<Derivation> children;
+  Rule? rule;
+  double? score = 0.0;
+  List<Derivation>? children;
 
-  Derivation(Rule rule, List<Derivation> children)
+  Derivation(Rule? rule, List<Derivation>? children)
       : rule = rule,
         children = children;
 
@@ -20,11 +20,11 @@ class Derivation {
     }
     features[d.rule.toString()] = 1;
 
-    for (var child in d.children) {
+    for (var child in d.children!) {
       for (var entry in _getRuleFeatures(child).keys) {
-        int count = features.containsKey(entry) ? features[entry] : 0;
+        int count = features.containsKey(entry) ? features[entry]! : 0;
         features[entry] =
-            count + (features.containsKey(entry) ? features[entry] : 1);
+            count + (features.containsKey(entry) ? features[entry]! : 1);
       }
     }
     return features;

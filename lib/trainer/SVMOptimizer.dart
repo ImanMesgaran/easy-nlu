@@ -12,12 +12,12 @@ import 'package:easy_nlu/trainer/optimizer.dart';
 class SVMOptimizer with Optimizer {
   static const String CORRECT_PROB = "correctProb";
 
-  double _learnRate;
-  double _l2Penalty;
-  double _lrDecay;
-  double _correctProb;
-  Parser _parser;
-  Map<String, double> _weights;
+  double? _learnRate;
+  double? _l2Penalty;
+  late double _lrDecay;
+  late double _correctProb;
+  late Parser _parser;
+  late Map<String, double?> _weights;
   Random _random = Random();
   Gaussian _gaussian = Gaussian();
 
@@ -61,13 +61,13 @@ class SVMOptimizer with Optimizer {
   }
 
   void onEpochComplete(int numExamples) {
-    _learnRate *= _lrDecay;
+    _learnRate = _learnRate! * _lrDecay;
   }
 
   double computeScore(Map<String, int> features) {
     double y = 0;
     for (var entry in features.entries) {
-      y += _weights.putIfAbsent(entry.key, () => _gaussian.nextGaussian()) *
+      y += _weights.putIfAbsent(entry.key, () => _gaussian.nextGaussian())! *
           entry.value;
     }
 
@@ -80,7 +80,7 @@ class SVMOptimizer with Optimizer {
   }
 
   double l2Loss(double l2Penalty) {
-    return _weights.values.map((x) => x * x).toList().reduce((a, b) => a + b);
+    return _weights.values.map((x) => x! * x).toList().reduce((a, b) => a + b);
   }
 
   double computeTarget(LogicalForm lf, Example e) {
@@ -88,19 +88,19 @@ class SVMOptimizer with Optimizer {
   }
 
   void updateWeights(
-      Map<String, int> features, double target, double learnRate) {
+      Map<String, int> features, double target, double? learnRate) {
     features.forEach(
-        (k, v) => _weights.update(k, (x) => x + learnRate * v * target));
+        (k, v) => _weights.update(k, (x) => x! + learnRate! * v * target));
   }
 
-  void updateL2Penalty(double learnRate, double l2Penalty) {
+  void updateL2Penalty(double? learnRate, double? l2Penalty) {
     _weights.keys.forEach((x) {
-      _weights[x] = _weights[x] * (1 - learnRate * l2Penalty);
+      _weights[x] = _weights[x]! * (1 - learnRate! * l2Penalty!);
     });
   }
 
   LogicalForm randomCandidate(Example e, List<LogicalForm> candidates) {
-    LogicalForm correct;
+    LogicalForm? correct;
     if (_random.nextDouble() < _correctProb) {
       for (var lf in candidates) {
         if (lf.match(e.label)) {
