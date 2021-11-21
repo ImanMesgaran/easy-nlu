@@ -19,7 +19,7 @@ void main() {
       expect("\$PHRASE", actual[0].getLHS);
       expect(expected, actual[0].getRHS.toString());
       expect(
-          expected, actual[0].getSemantics(null)[0][nlu.Semantics.KEY_UNNAMED]);
+          expected, actual[0].getSemantics!(null)![0][nlu.Semantics.KEY_UNNAMED]);
     });
   });
 }

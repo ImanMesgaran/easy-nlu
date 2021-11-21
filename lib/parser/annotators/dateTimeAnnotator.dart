@@ -167,8 +167,8 @@ class DateTimeAnnotator with Annotator {
         "\$DATE_DURATION", "\$A \$Year", Semantics.named("year", 1.0))
   ];
 
-  Map<String, double> _mapMonths;
-  Map<String, double> _mapDow;
+  late Map<String, double> _mapMonths;
+  late Map<String, double> _mapDow;
 
   DateTimeAnnotator() {
     _mapMonths = {};
@@ -186,7 +186,7 @@ class DateTimeAnnotator with Annotator {
   List<Rule> annotate(List<String> tokens) {
     if (tokens.length == 1) {
       String s = tokens[0].toLowerCase();
-      Rule r = _parseMonth(s);
+      Rule? r = _parseMonth(s);
       if (r == null) {
         r = _parseDay(s);
       }
@@ -204,8 +204,8 @@ class DateTimeAnnotator with Annotator {
     return [];
   }
 
-  Rule _parseMonth(String s) {
-    Rule r;
+  Rule? _parseMonth(String s) {
+    Rule? r;
 
     if (_mapMonths.containsKey(s.toLowerCase())) {
       r = Rule.fromStringsWithTemplate(
@@ -215,8 +215,8 @@ class DateTimeAnnotator with Annotator {
     return r;
   }
 
-  Rule _parseDay(String s) {
-    Rule r;
+  Rule? _parseDay(String s) {
+    Rule? r;
 
     if (s == "today") {
       r = Rule.fromStringsWithTemplate("\$DATE_OFFSET", s,
@@ -235,10 +235,10 @@ class DateTimeAnnotator with Annotator {
   List<Rule> _parseNumber(String s) {
     List<Rule> rules = [];
 
-    RegExpMatch m = DateTimeAnnotator.PATTERN_NUMBER.firstMatch(s);
+    RegExpMatch? m = DateTimeAnnotator.PATTERN_NUMBER.firstMatch(s);
 
     if (m != null) {
-      var val = int.parse(m.group(1));
+      var val = int.parse(m.group(1)!);
       if (val >= 1 && val <= 31) {
         rules.add(Rule.fromStringsWithTemplate(
             "\$DATE_DAY", s, Semantics.named("day", val.toDouble())));
@@ -257,7 +257,7 @@ class DateTimeAnnotator with Annotator {
       if (val >= 100 && val <= 1259) {
         var min = val % 100;
         var hr = val / 100;
-        Map<String, Object> template = Semantics.named("hour", hr.toDouble());
+        Map<String, Object?> template = Semantics.named("hour", hr.toDouble());
         if (min > 0) {
           template["minute"] = min.toDouble();
         }
@@ -268,8 +268,8 @@ class DateTimeAnnotator with Annotator {
     return rules;
   }
 
-  Rule _parseTime(String s) {
-    Rule rule;
+  Rule? _parseTime(String s) {
+    Rule? rule;
 
     if (DateTimeAnnotator.SHIFT_MAP.containsKey(s)) {
       rule = Rule.fromStringsWithTemplate("\$DATE_SHIFT", s,

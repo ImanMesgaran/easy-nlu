@@ -16,7 +16,7 @@ void main() {
       expect(1, actual.length);
       expect("\$NUMBER", actual[0].getLHS);
       expect("123", actual[0].getRHS.toString());
-      expect(123.0, actual[0].getSemantics(null)[0][nlu.Semantics.KEY_UNNAMED]);
+      expect(123.0, actual[0].getSemantics!(null)![0][nlu.Semantics.KEY_UNNAMED]);
     });
   });
 }

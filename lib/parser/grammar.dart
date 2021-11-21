@@ -6,21 +6,21 @@ import 'package:easy_nlu/parser/semantics.dart';
 import 'package:easy_nlu/parser/stringTuple.dart';
 
 class Grammar {
-  HashMap<StringTuple, List<Rule>> _lexicalRules;
-  HashMap<StringTuple, List<Rule>> _unaryRules;
-  HashMap<StringTuple, List<Rule>> _binaryRules;
-  HashSet<String> _combinedCategories;
-  HashSet<Rule> _nonTerminals;
+  HashMap<StringTuple, List<Rule>>? _lexicalRules;
+  HashMap<StringTuple, List<Rule>>? _unaryRules;
+  HashMap<StringTuple, List<Rule>>? _binaryRules;
+  HashSet<String>? _combinedCategories;
+  HashSet<Rule>? _nonTerminals;
 
-  HashMap<StringTuple, List<Rule>> get lexicalRules => _lexicalRules;
-  HashMap<StringTuple, List<Rule>> get unaryRules => _unaryRules;
-  HashMap<StringTuple, List<Rule>> get binaryRules => _binaryRules;
-  HashSet<String> get combinedCategories => _combinedCategories;
-  HashSet<Rule> get nonTerminals => _nonTerminals;
+  HashMap<StringTuple, List<Rule>>? get lexicalRules => _lexicalRules;
+  HashMap<StringTuple, List<Rule>>? get unaryRules => _unaryRules;
+  HashMap<StringTuple, List<Rule>>? get binaryRules => _binaryRules;
+  HashSet<String>? get combinedCategories => _combinedCategories;
+  HashSet<Rule>? get nonTerminals => _nonTerminals;
 
-  String _rootCategory;
+  String? _rootCategory;
 
-  Grammar(List<Rule> rules, String rootCategory) {
+  Grammar(List<Rule> rules, String? rootCategory) {
     _lexicalRules = HashMap();
     _unaryRules = HashMap();
     _binaryRules = HashMap();
@@ -37,22 +37,22 @@ class Grammar {
     return rule.getLHS == _rootCategory;
   }
 
-  List<Rule> getLexicalRules(List<String> rhs) {
+  List<Rule>? getLexicalRules(List<String> rhs) {
     StringTuple tuple = StringTuple.fromList(rhs);
-    return lexicalRules.containsKey(tuple) ? lexicalRules[tuple] : [];
+    return lexicalRules!.containsKey(tuple) ? lexicalRules![tuple] : [];
   }
 
-  List<Rule> getUnaryRules(String rhs) {
+  List<Rule>? getUnaryRules(String rhs) {
     StringTuple tuple = StringTuple.fromList([rhs]);
-    return unaryRules.containsKey(tuple) ? unaryRules[tuple] : [];
+    return unaryRules!.containsKey(tuple) ? unaryRules![tuple] : [];
   }
 
-  List<Rule> getBinaryRules(String left, String right) {
+  List<Rule>? getBinaryRules(String left, String right) {
     StringTuple tuple = StringTuple.fromList([left, right]);
-    return binaryRules.containsKey(tuple) ? binaryRules[tuple] : [];
+    return binaryRules!.containsKey(tuple) ? binaryRules![tuple] : [];
   }
 
-  Set<Rule> getNonTerminalRules() {
+  Set<Rule>? getNonTerminalRules() {
     return nonTerminals;
   }
 
@@ -75,17 +75,17 @@ class Grammar {
   }
 
   void _addLexicalRule(Rule rule) {
-    _computeIfAbsent(_lexicalRules, rule.getRHS, [rule]);
+    _computeIfAbsent(_lexicalRules!, rule.getRHS, [rule]);
   }
 
   void _addUnaryRule(Rule rule) {
-    _nonTerminals.add(rule);
-    _computeIfAbsent(_unaryRules, rule.getRHS, [rule]);
+    _nonTerminals!.add(rule);
+    _computeIfAbsent(_unaryRules!, rule.getRHS, [rule]);
   }
 
   void _addBinaryRule(Rule rule) {
-    _nonTerminals.add(rule);
-    _computeIfAbsent(_binaryRules, rule.getRHS, [rule]);
+    _nonTerminals!.add(rule);
+    _computeIfAbsent(_binaryRules!, rule.getRHS, [rule]);
   }
 
   void _processOptionals(Rule rule) {
@@ -100,8 +100,8 @@ class Grammar {
 
     _addRule(Rule(rule.getLHS, withOptional, rule.getSemantics));
     SemanticFunction fn = (params) {
-      params.insert(index, HashMap());
-      return rule.getSemantics(params);
+      params!.insert(index, HashMap());
+      return rule.getSemantics!(params);
     };
 
     _addRule(Rule(rule.getLHS, withoutOptional, fn));
@@ -113,11 +113,11 @@ class Grammar {
     String lhsUpper = rule.getLHS;
     String lhsLower = "${lhsUpper}_${rhs.getItem(0)}";
 
-    while (_combinedCategories.contains(lhsLower)) {
+    while (_combinedCategories!.contains(lhsLower)) {
       lhsLower = lhsLower + "_";
     }
 
-    _combinedCategories.add(lhsLower);
+    _combinedCategories!.add(lhsLower);
 
     StringTuple rhsLower = rhs.removeItem(0);
     StringTuple rhsUpper = StringTuple.fromList([rhs.getItem(0), lhsLower]);
@@ -126,7 +126,7 @@ class Grammar {
     _addRule(Rule(lhsUpper, rhsUpper, rule.getSemantics));
   }
 
-  V _computeIfAbsent<K, V>(Map<K, V> map, K key, V initialValue) {
+  V? _computeIfAbsent<K, V>(Map<K, V> map, K key, V initialValue) {
     if (!map.containsKey(key)) {
       map[key] = initialValue;
       return initialValue;

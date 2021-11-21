@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 class StringTuple extends ListBase<String> {
-  List<String> _items;
-  String _repr;
+  late List<String> _items;
+  String? _repr;
 
   StringTuple(String s) {
     _repr = s;
@@ -28,7 +28,7 @@ class StringTuple extends ListBase<String> {
   }
 
   StringTuple modify(int index, String Function(String) modifier) {
-    List<String> copy = _stringToItems(_repr);
+    List<String> copy = _stringToItems(_repr!);
 
     copy[index] = modifier(_items[index]);
 
@@ -38,7 +38,7 @@ class StringTuple extends ListBase<String> {
   }
 
   StringTuple removeItem(int index) {
-    List<String> copy = _stringToItems(_repr);
+    List<String> copy = _stringToItems(_repr!);
 
     copy.removeAt(index);
 
@@ -48,7 +48,7 @@ class StringTuple extends ListBase<String> {
   }
 
   StringTuple insertItem(int index, String value) {
-    List<String> copy = _stringToItems(_repr);
+    List<String> copy = _stringToItems(_repr!);
 
     copy.insert(0, value);
 
@@ -61,7 +61,7 @@ class StringTuple extends ListBase<String> {
   int get length => _items.length;
   String operator [](int index) => _items[index];
   void operator []=(int index, String value) {
-    List<String> copy = _stringToItems(_repr);
+    List<String> copy = _stringToItems(_repr!);
     copy[index] = value;
     String modifiedRepr = copy.join(" ");
 
@@ -73,6 +73,6 @@ class StringTuple extends ListBase<String> {
   int get hashCode => _repr.hashCode;
 
   String toString() {
-    return _repr;
+    return _repr!;
   }
 }
