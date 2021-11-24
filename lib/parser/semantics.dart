@@ -84,7 +84,8 @@ class Semantics {
           break;
       }
     } else if (semantics.startsWith("{")) {
-      Map<String, Object>? template = json.decode(semantics);
+      Map<String, Object>? template =
+          Map<String, Object>.from(json.decode(semantics));
       fn = Semantics.parseTemplate(template);
     } else {
       fn = Semantics.valueFn(semantics);
@@ -162,7 +163,8 @@ class Semantics {
 
       if (numberType == null) {
         Semantics.subsume(map, params[index], key);
-      } else if (params.firstWhereOrNull((x) => x.containsKey(Semantics.KEY_UNNAMED)) !=
+      } else if (params.firstWhereOrNull(
+                  (x) => x.containsKey(Semantics.KEY_UNNAMED)) !=
               null &&
           param[Semantics.KEY_UNNAMED] is num) {
         int? val = param[Semantics.KEY_UNNAMED] as int?;
